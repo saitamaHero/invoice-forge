@@ -1,0 +1,18 @@
+{
+    "button": {
+        "download": {
+            "file": "Download {label}"
+        },
+        "reset": "Reset"
+    },
+    "editor": {
+        "invoice_details": {
+            "title": "Invoice Details",
+            "invoice_num": "Invoice Number",
+            "date": "Date"
+        },
+        "line_items": {
+            "title": "Line Items"
+        }
+    }
+}

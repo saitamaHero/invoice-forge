@@ -1,0 +1,132 @@
+<style>
+    @import url('https://fonts.cdnfonts.com/css/century-gothic-paneuropean');
+
+    /* PDF Generation Optimizations */
+    .invoice-wrapper * { -webkit-print-color-adjust: exact !important; color-adjust: exact !important; box-sizing: border-box; }
+
+    /* Update this specific class in your style block */
+    .invoice-wrapper { 
+        width: 100%; 
+        /* Max width prevents it from capturing a 1920px wide screen and scaling weirdly */
+        max-width: 800px; 
+        margin: 0; 
+        padding: 0;
+        background-color: #fff; 
+        position: relative; 
+        font-family: 'Century Gothic Paneuropean', 'Helvetica', 'Arial', sans-serif; 
+        font-size: 10pt; 
+         color: #333;
+        /* Crucial fix for phantom pages: */
+        overflow: hidden; 
+    }
+    
+    /* Utilities */
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+    .text-bold { font-weight: bold; }
+    .blue-text { color: #005691 !important; }
+    .no-break { page-break-inside: avoid; } 
+
+    h1.main-title { font-size: 22pt; margin-bottom: 10pt; margin-top: 0; font-weight: normal; text-transform: uppercase; letter-spacing: 1px;  padding: 8pt; }
+
+    /* Tables */
+    table.layout-table { width: 100%; border-collapse: collapse; margin-bottom: 20pt; }
+    table.layout-table td { vertical-align: top; }
+
+    /* Sender Info */
+    .sender-name-bar { background-color: #d9d9d9; padding: 8pt; font-size: 11pt; font-weight: bold; margin-bottom: 10pt; width: 100%; text-align: center; }
+    .address-block { line-height: 1.4; white-space: pre-wrap; }
+
+    /* Invoice Details (Top Right) */
+    .invoice-details-table { width: 100%;}
+    .invoice-details-table td { padding: 0pt 0pt; margin-bottom: 4pt;}
+    .invoice-details-table .label { font-weight: bold; text-align: left; white-space: nowrap; }
+    .invoice-details-table .label+td {
+        text-align: right !important;
+    }
+
+    /* Headers */
+    .section-header { font-weight: bold; display: block; text-transform: uppercase; font-size: 9pt; }
+
+    /* Line Items Table */
+    table.item-table { width: 100%; border-collapse: collapse; margin-top: 15pt; }
+    table.item-table th { background-color: #2d74b5; color: white !important; padding: 8pt; text-transform: uppercase; font-weight: bold; border: 1px solid #5b9bd5; font-size: 9pt; }
+    table.item-table td { padding: 8pt; border: 1px solid #5b9bd5; font-size: 10pt; }
+    
+    .col-desc { text-align: left; }
+    .col-total { text-align: right; width: 140px; }
+
+    /* Footer / Totals */
+    .total-section { margin-top: 0; border: 1px solid #5b9bd5; border-top: none; padding:4pt; text-align: right; display: flex; justify-content: flex-end; align-items: center; }
+    .total-label { font-weight: bold; margin-right: 30px; font-size: 10pt; }
+    .total-amount { font-weight: bold; font-size: 11pt; min-width: 100px; text-align: right; }
+  </style>
+
+  <div class="invoice-wrapper">
+    <h1 class="main-title text-center blue-text">RECIBO POR SERVICIOS</h1>
+
+    <div class="sender-name-bar" >
+        <p>{{from.name}}</p>
+    </div>
+
+    <table class="layout-table">
+        <tr style="text-align: left">
+            <td width="55%">
+                <div class="address-block"><span class="text-bold">Dirección</span>
+{{from.address}}
+Teléfono {{from.phone}}
+Correo electrónico {{from.email}}</div>
+            </td>
+            <td width="45%">
+                <table class="invoice-details-table">
+                    <tr><td class="label">N.º DE</td><td>{{invoiceNum}}</td></tr>
+                    <tr><td class="label">FECHA</td><td>{{date}}</td></tr>
+                    <tr><td class="label">ID. DEL CLIENTE</td><td>{{from.documentId}}</td></tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <table class="layout-table">
+        <tr style="text-align: left;">
+            <td width="55%" style="padding-right: 20px;">
+                <span class="section-header">PARA</span>
+                <div class="address-block">{{to.company}} {{breaklines to.address}} {{to.phone}}</div>
+                <div style="height: 15pt;"></div>
+                <span class="section-header">CLIENTE & PROYECTO</span>
+                <div class="address-block">{{to.name}}</div>
+            </td>
+            <td width="45%">
+                <span class="section-header">ENVIAR A</span>
+                <div class="address-block">{{breaklines to.name}}
+{{to.company}}
+{{to.email}}</div>
+                <div style="height: 15pt;"></div>
+                <span class="section-header">CONDICIONES</span>
+                <div class="address-block">{{breaklines notes}}</div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="item-table">
+        <thead>
+            <tr>
+                <th class="col-desc">DESCRIPCIÓN DE CARGO</th>
+                <th class="col-total">TOTAL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each items}}
+            <tr class="no-break">
+                <td class="col-desc">{{description}}</td>
+                <td class="col-total">{{currency}} {{ formatCurrency (multiply quantity price) }}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <div class="total-section">
+        <span class="total-label">TOTAL A PAGAR</span>
+        <span class="total-amount">{{calculateTotal items}}</span>
+    </div>
+  </div>

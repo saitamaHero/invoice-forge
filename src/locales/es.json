@@ -1,0 +1,18 @@
+{
+    "button": {
+        "download": {
+            "file": "Descargar {label}"
+        },
+        "reset": "Limpiar"
+    },
+    "editor": {
+        "invoice_details": {
+            "title": "Detalles de la Factura",
+            "invoice_num": "Factura No.",
+            "date": "Fecha"
+        },
+        "line_items": {
+            "title": "Conceptos"
+        }
+    }
+}

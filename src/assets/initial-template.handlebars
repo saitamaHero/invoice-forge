@@ -1,0 +1,78 @@
+<style>
+    /* These styles are injected into the PDF */
+    .header-row { display: flex; justify-content: space-between; margin-bottom: 40px; }
+    .company-title { font-size: 24px; font-weight: bold; color: #333; margin: 0; }
+    .invoice-title { font-size: 32px; color: #555; text-align: right; margin: 0; }
+    .meta-data { text-align: right; font-size: 14px; color: #666; }
+    
+    .address-box { margin-bottom: 30px; font-size: 14px; line-height: 1.6; }
+    .bill-to-label { font-size: 12px; text-transform: uppercase; color: #999; margin-bottom: 5px; }
+    .client-name { font-weight: bold; font-size: 16px; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th { text-align: left; background: #f5f5f5; padding: 12px; font-size: 12px; text-transform: uppercase; border-bottom: 2px solid #ddd; }
+    td { padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
+    .text-right { text-align: right; }
+    
+    .totals-section { display: flex; justify-content: flex-end; margin-top: 20px; }
+    .total-box { width: 300px; text-align: right; }
+    .grand-total { font-size: 20px; font-weight: bold; border-top: 2px solid #333; padding-top: 10px; margin-top: 10px; }
+
+    .notes { margin-top: 60px; padding-top: 20px; border-top: 1px dashed #ccc; font-size: 13px; color: #777; }
+  </style>
+
+  <div>
+    <div class="header-row">
+      <div>
+        <h1 class="company-title">{{from.name}}</h1>
+        <div class="address-box">{{breaklines from.address}}</div>
+      </div>
+      <div>
+        <h2 class="invoice-title">INVOICE</h2>
+        <div class="meta-data">
+          <p># {{invoiceNum}}<br>{{date}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="address-box">
+      <div class="bill-to-label">Bill To:</div>
+      <div class="client-name">{{to.name}}</div>
+      <div>{{breaklines to.address}}</div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th width="50%">Description</th>
+          <th width="15%">Qty</th>
+          <th width="15%">Price</th>
+          <th width="20%" class="text-right">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each items}}
+        <tr>
+          <td>{{description}}</td>
+          <td>{{qty}}</td>
+          <td>{{formatCurrency price}}</td>
+          <td class="text-right">$ {{multiply qty price}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+
+    <div class="totals-section">
+      <div class="total-box">
+        <div class="grand-total">Total: {{calculateTotal items}}</div>
+      </div>
+    </div>
+
+    {{#if notes}}
+    <div class="notes">
+      <strong>Notes:</strong><br>
+      {{breaklines notes}}
+    </div>
+    {{/if}}
+
+  </div>
