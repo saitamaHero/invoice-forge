@@ -34,10 +34,11 @@
 
                 <v-expansion-panel value="meta" :title="t('editor.invoice_details.title')">
                   <v-expansion-panel-text>
-                    <v-text-field v-model="data.invoiceNum" :label="t('editor.invoice_details.invoice_num')" variant="outlined" density="compact"
-                      hide-details class="mb-3"></v-text-field>
-                   
-                    <v-date-input v-model="data.date" :label="t('editor.invoice_details.date')" prepend-icon="" variant="outlined"></v-date-input>
+                    <v-text-field v-model="data.invoiceNum" :label="t('editor.invoice_details.invoice_num')"
+                      variant="outlined" density="compact" hide-details class="mb-3"></v-text-field>
+
+                    <v-date-input v-model="data.date" :label="t('editor.invoice_details.date')" prepend-icon=""
+                      variant="outlined"></v-date-input>
                   </v-expansion-panel-text>
                 </v-expansion-panel>
 
@@ -45,9 +46,9 @@
                   <v-expansion-panel-text>
                     <v-text-field v-model="data.from.name" label="Your Company Name" variant="outlined"
                       density="compact" class="mb-3" hide-details></v-text-field>
-                     <v-text-field v-model="data.from.documentId" label="ID" variant="outlined" density="compact"
+                    <v-text-field v-model="data.from.documentId" label="ID" variant="outlined" density="compact"
                       hide-details class="mb-3" placeholder="123-4567890-1"></v-text-field>
-  
+
                     <v-textarea v-model="data.from.address" label="Your Address" variant="outlined" density="compact"
                       rows="3" hide-details></v-textarea>
                   </v-expansion-panel-text>
@@ -57,7 +58,9 @@
                   <v-expansion-panel-text>
                     <v-text-field v-model="data.to.name" label="Client Name" variant="outlined" density="compact"
                       class="mb-3" hide-details></v-text-field>
-                    <v-textarea v-model="data.to.address" label="Client Address" variant="outlined" density="compact"
+                    <v-textarea v-model="data.to.address"   class="mb-3" label="Client Address" variant="outlined" density="compact"
+                      rows="3" hide-details></v-textarea>
+                    <v-textarea v-model="data.to.sentTo" label="Sent To" variant="outlined" density="compact"
                       rows="3" hide-details></v-textarea>
                   </v-expansion-panel-text>
                 </v-expansion-panel>
@@ -144,11 +147,12 @@ const data = reactive({
   },
   to: {
     name: 'Global Tech Industries',
-    address: '456 Innovation Dr\nSan Francisco, CA 94000'
+    address: '456 Innovation Dr\nSan Francisco, CA 94000',
+    sentTo: 'Carolina Pachulina'
   },
   items: [
     { description: 'Honorarios mes de Noviembre', quantity: 1, price: 0 },
-    { description: 'UI/UX Design', quantity: 15, price:1 }
+    { description: 'UI/UX Design', quantity: 15, price: 1 }
   ],
   notes: 'Payment is due within 30 days. Thank you for your business!',
   currency: 'USD'
@@ -172,7 +176,7 @@ onMounted(() => {
 const compiledHtml = computed(() => {
   try {
     const template = Handlebars.compile(rawTemplate)
-    const templateData ={...data}
+    const templateData = { ...data }
 
     if (templateData.date instanceof Date) {
       const dt = DateTime.fromJSDate(templateData.date).setZone('America/Santo_Domingo').setLocale("es-DO");
