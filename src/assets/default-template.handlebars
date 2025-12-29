@@ -30,7 +30,7 @@
     h1.main-title { font-size: 22pt; margin-bottom: 10pt; margin-top: 0; font-weight: normal; text-transform: uppercase; letter-spacing: 1px;  padding: 8pt; }
 
     /* Tables */
-    table.layout-table { width: 100%; border-collapse: collapse; margin-bottom: 20pt; }
+    table.layout-table { width: 100%; border-collapse: collapse; margin-bottom: 5pt; }
     table.layout-table td { vertical-align: top; }
 
     /* Sender Info */
@@ -73,9 +73,8 @@
         <tr style="text-align: left">
             <td width="55%">
                 <div class="address-block"><span class="text-bold">Dirección</span>
-{{from.address}}
-Teléfono {{from.phone}}
-Correo electrónico {{from.email}}</div>
+                    <p style="margin: 0;">{{from.address}}</p>
+                </div>
             </td>
             <td width="45%">
                 <table class="invoice-details-table">
@@ -98,7 +97,7 @@ Correo electrónico {{from.email}}</div>
             </td>
             <td width="45%">
                 <span class="section-header">ENVIAR A</span>
-                <div class="address-block">{{breaklines to.name}}
+                <div class="address-block">{{breaklines to.sentTo}}
 {{to.company}}
 {{to.email}}</div>
                 <div style="height: 15pt;"></div>
