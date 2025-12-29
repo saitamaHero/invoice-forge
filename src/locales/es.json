@@ -25,7 +25,11 @@
             "sentTo": "Enviado a"
         },
         "line_items": {
-            "title": "Conceptos"
+            "title": "Conceptos",
+            "description": "Descripción",
+            "quantity": "Cantidad",
+            "unit_price": "Precio Unitario",
+            "total": "Total"
         },
         "notes_terms": {
             "payment_terms": "Términos de Pago / Notas"
