@@ -151,8 +151,7 @@ const data = reactive({
     sentTo: 'Carolina Pachulina'
   },
   items: [
-    { description: 'Honorarios mes de Noviembre', quantity: 1, price: 0 },
-    { description: 'UI/UX Design', quantity: 15, price: 1 }
+    newLineItem({ description: 'Honorarios mes de ' + DateTime.now().setLocale(navigator.language).toFormat('LLLL') }),
   ],
   notes: 'Payment is due within 30 days. Thank you for your business!',
   currency: 'USD'
