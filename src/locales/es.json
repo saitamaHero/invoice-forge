@@ -11,8 +11,24 @@
             "invoice_num": "Factura No.",
             "date": "Fecha"
         },
+        "from": {
+            "title": "De (Datos del Emisor)",
+            "name": "Nombre",
+            "documentId": "ID de Documento",
+            "address": "Dirección"
+        },
+        "to": {
+            "title": "Para (Datos del Cliente)",
+            "name": "Nombre",
+            "documentId": "ID de Documento",
+            "address": "Dirección",
+            "sentTo": "Enviado a"
+        },
         "line_items": {
             "title": "Conceptos"
+        },
+        "notes_terms": {
+            "payment_terms": "Términos de Pago / Notas"
         }
     }
 }

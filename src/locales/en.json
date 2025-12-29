@@ -11,8 +11,28 @@
             "invoice_num": "Invoice Number",
             "date": "Date"
         },
+        "from": {
+            "title": "From (Issuer Details)",
+            "name": "Name",
+            "documentId": "Document ID",
+            "address": "Address"
+        },
+        "to": {
+            "title": "To (Client Details)",
+            "name": "Name",
+            "documentId": "Document ID",
+            "address": "Address",
+            "sentTo": "Sent To"
+        },
         "line_items": {
-            "title": "Line Items"
+            "title": "Line Items",
+            "description": "Description",
+            "quantity": "Quantity",
+            "unit_price": "Unit Price",
+            "total": "Total"
+        },
+        "notes_terms": {
+            "payment_terms": "Payment Terms / Notes"
         }
     }
 }

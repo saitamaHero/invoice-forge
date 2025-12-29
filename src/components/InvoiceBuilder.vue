@@ -42,26 +42,26 @@
                   </v-expansion-panel-text>
                 </v-expansion-panel>
 
-                <v-expansion-panel value="from" title="From (You)">
+                <v-expansion-panel value="from" :title="t('editor.from.title')">
                   <v-expansion-panel-text>
-                    <v-text-field v-model="data.from.name" label="Your Company Name" variant="outlined"
+                    <v-text-field v-model="data.from.name" :label="t('editor.from.name')" variant="outlined"
                       density="compact" class="mb-3" hide-details></v-text-field>
-                    <v-text-field v-model="data.from.documentId" label="ID" variant="outlined" density="compact"
+                    <v-text-field v-model="data.from.documentId" :label="t('editor.from.documentId')" variant="outlined" density="compact"
                       hide-details class="mb-3" placeholder="123-4567890-1"></v-text-field>
 
-                    <v-textarea v-model="data.from.address" label="Your Address" variant="outlined" density="compact"
+                    <v-textarea v-model="data.from.address" :label="t('editor.from.address')" variant="outlined" density="compact"
                       rows="3" hide-details></v-textarea>
                   </v-expansion-panel-text>
                 </v-expansion-panel>
 
-                <v-expansion-panel value="to" title="Bill To (Client)">
+                <v-expansion-panel value="to" :title="t('editor.to.title')">
                   <v-expansion-panel-text>
-                    <v-text-field v-model="data.to.name" label="Client Name" variant="outlined" density="compact"
+                    <v-text-field v-model="data.to.name" :label="t('editor.to.name')" variant="outlined" density="compact"
                       class="mb-3" hide-details></v-text-field>
-                    <v-textarea v-model="data.to.address"   class="mb-3" label="Client Address" variant="outlined" density="compact"
-                      rows="3" hide-details></v-textarea>
-                    <v-textarea v-model="data.to.sentTo" label="Sent To" variant="outlined" density="compact"
-                      rows="3" hide-details></v-textarea>
+                    <v-textarea v-model="data.to.address" class="mb-3" :label="t('editor.to.address')" variant="outlined"
+                      density="compact" rows="3" hide-details></v-textarea>
+                    <v-textarea v-model="data.to.sentTo" :label="t('editor.to.sentTo')  " variant="outlined" density="compact" rows="3"
+                      hide-details></v-textarea>
                   </v-expansion-panel-text>
                 </v-expansion-panel>
 
@@ -69,25 +69,7 @@
                   <v-expansion-panel-text class="px-2">
 
                     <div v-for="(item, i) in data.items" :key="i" class="mb-4 pt-2 border-t">
-                      <div class="d-flex justify-space-between align-center mb-1">
-                        <span class="text-caption font-weight-bold">Item {{ i + 1 }}</span>
-                        <v-btn icon="mdi-delete" size="x-small" color="error" variant="text"
-                          @click="removeItem(i)"></v-btn>
-                      </div>
-
-                      <v-text-field v-model="item.description" label="Description" variant="outlined" density="compact"
-                        hide-details class="mb-2"></v-text-field>
-
-                      <v-row dense>
-                        <v-col cols="5">
-                          <v-text-field v-model.number="item.quantity" type="number" label="Qty" variant="outlined"
-                            density="compact" hide-details></v-text-field>
-                        </v-col>
-                        <v-col cols="7">
-                          <v-text-field v-model.number="item.price" type="number" label="Price" prefix="$"
-                            variant="outlined" density="compact" hide-details></v-text-field>
-                        </v-col>
-                      </v-row>
+                      <LineItem :item="item" @removeItem="removeItem"></LineItem>
                     </div>
 
                     <v-btn block color="indigo-lighten-1" variant="tonal" prepend-icon="mdi-plus" @click="addItem">
@@ -130,6 +112,9 @@ import { setupHandlebars } from '../utils/handlerbars.util'
 import rawTemplate from '../assets/default-template.handlebars?raw';
 import { useI18n } from 'vue-i18n'
 import { DateTime } from 'luxon';
+import LineItem from './Builder/LineItem.vue'
+import { nanoid } from 'nanoid';
+import { newLineItem } from '../utils/line-items.util';
 
 const activePanel = ref('items') // Default open panel
 const { t, locale } = useI18n()
@@ -141,23 +126,23 @@ const data = reactive({
   invoiceNum: '1',
   date: new Date(),
   from: {
-    name: 'Dionicio Acevedo',
+    name: '[Your Name or Company]',
     address: '123 Designer Blvd\nNew York, NY 10012',
-    documentId: '123-4567890-1'
+    documentId: '[123-4567890-1]'
   },
   to: {
-    name: 'Global Tech Industries',
-    address: '456 Innovation Dr\nSan Francisco, CA 94000',
-    sentTo: 'Carolina Pachulina'
+    name: '[Client Name or Company]',
+    address: '[Client Address]',
+    sentTo: '[Contact Person]'
   },
   items: [
     newLineItem({ description: 'Honorarios mes de ' + DateTime.now().setLocale(navigator.language).toFormat('LLLL') }),
   ],
-  notes: 'Payment is due within 30 days. Thank you for your business!',
+  notes: '[Add payment terms or notes here]',
   currency: 'USD'
 })
 
-const addItem = () => data.items.push({ description: '', qty: 1, price: 0 })
+const addItem = () => data.items.push(newLineItem({ description: 'new item', id: nanoid() }))
 const removeItem = (i) => data.items.splice(i, 1)
 const resetForm = () => {
   if (confirm('Clear all data?')) {
@@ -169,22 +154,21 @@ const resetForm = () => {
 
 setupHandlebars()
 
-onMounted(() => {
-})
-
 const compiledHtml = computed(() => {
   try {
     const template = Handlebars.compile(rawTemplate)
     const templateData = { ...data }
 
     if (templateData.date instanceof Date) {
-      const dt = DateTime.fromJSDate(templateData.date).setZone('America/Santo_Domingo').setLocale("es-DO");
+      const dt = DateTime.fromJSDate(templateData.date)
+        .setZone(Intl.DateTimeFormat()
+        .resolvedOptions().timeZone)
+        .setLocale(navigator.language);
       templateData.date = dt.toLocaleString(DateTime.DATE_SHORT)
     }
     return template(templateData)
   } catch (e) {
-    console.error(e)
-    return 'Loading template...'
+    return 'Template Error...'
   }
 })
 
@@ -217,11 +201,5 @@ const generatePDF = () => {
   /* Visual padding matching PDF margin */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
-}
-
-/* Ensure font consistency between screen and PDF */
-.invoice-paper * {
-  /* font-family: 'Helvetica', 'Arial', sans-serif; */
-  /* color: #333; */
 }
 </style>
