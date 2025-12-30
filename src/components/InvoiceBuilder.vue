@@ -45,22 +45,22 @@
                   <v-expansion-panel-text>
                     <v-text-field v-model="data.from.name" :label="t('editor.from.name')" variant="outlined"
                       density="compact" class="mb-3" hide-details></v-text-field>
-                    <v-text-field v-model="data.from.documentId" :label="t('editor.from.documentId')" variant="outlined" density="compact"
-                      hide-details class="mb-3" placeholder="123-4567890-1"></v-text-field>
+                    <v-text-field v-model="data.from.documentId" :label="t('editor.from.documentId')" variant="outlined"
+                      density="compact" hide-details class="mb-3" placeholder="123-4567890-1"></v-text-field>
 
-                    <v-textarea v-model="data.from.address" :label="t('editor.from.address')" variant="outlined" density="compact"
-                      rows="3" hide-details></v-textarea>
+                    <v-textarea v-model="data.from.address" :label="t('editor.from.address')" variant="outlined"
+                      density="compact" rows="3" hide-details></v-textarea>
                   </v-expansion-panel-text>
                 </v-expansion-panel>
 
                 <v-expansion-panel value="to" :title="t('editor.to.title')">
                   <v-expansion-panel-text>
-                    <v-text-field v-model="data.to.name" :label="t('editor.to.name')" variant="outlined" density="compact"
-                      class="mb-3" hide-details></v-text-field>
-                    <v-textarea v-model="data.to.address" class="mb-3" :label="t('editor.to.address')" variant="outlined"
+                    <v-text-field v-model="data.to.name" :label="t('editor.to.name')" variant="outlined"
+                      density="compact" class="mb-3" hide-details></v-text-field>
+                    <v-textarea v-model="data.to.address" class="mb-3" :label="t('editor.to.address')"
+                      variant="outlined" density="compact" rows="3" hide-details></v-textarea>
+                    <v-textarea v-model="data.to.sentTo" :label="t('editor.to.sentTo')  " variant="outlined"
                       density="compact" rows="3" hide-details></v-textarea>
-                    <v-textarea v-model="data.to.sentTo" :label="t('editor.to.sentTo')  " variant="outlined" density="compact" rows="3"
-                      hide-details></v-textarea>
                   </v-expansion-panel-text>
                 </v-expansion-panel>
 
@@ -68,7 +68,7 @@
                   <v-expansion-panel-text class="px-2">
 
                     <div v-for="(item, i) in data.items" :key="i" class="mb-4 pt-2 border-t">
-                      <LineItem :item="item" @removeItem="removeItem"></LineItem>
+                      <LineItem :item="item" @removeItem="removeItem(item.id)"></LineItem>
                     </div>
 
                     <v-btn block color="indigo-lighten-1" variant="tonal" prepend-icon="mdi-plus" @click="addItem">
@@ -112,7 +112,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import Handlebars from 'handlebars'
 import html2pdf from 'html2pdf.js'
 import { setupHandlebars } from '../utils/handlerbars.util'
