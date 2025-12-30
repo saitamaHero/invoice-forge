@@ -6,9 +6,8 @@
       <v-spacer></v-spacer>
 
       <div style="width: 150px" class="me-2">
-        <v-select v-model="locale" :items="availableLocales" item-title="title" item-value="value"
-          prepend-inner-icon="mdi-translate" density="compact" variant="outlined" hide-details rounded="lg"
-          color="white" base-color="white"></v-select>
+        <!-- Locale Chooser Component -->
+        <LocaleChooser></LocaleChooser>
       </div>
       <v-btn prepend-icon="mdi-refresh" variant="text" @click="resetForm">
         {{ t('button.reset') }}
@@ -113,15 +112,12 @@ import rawTemplate from '../assets/default-template.handlebars?raw';
 import { useI18n } from 'vue-i18n'
 import { DateTime } from 'luxon';
 import LineItem from './Builder/LineItem.vue'
-import { nanoid } from 'nanoid';
+import LocaleChooser from './Settings/LocaleChooser.vue'
 import { newLineItem } from '../utils/line-items.util';
 
 const activePanel = ref('items') // Default open panel
-const { t, locale } = useI18n()
-const availableLocales = [
-  { title: 'Español', value: 'es' },
-  { title: 'English', value: 'en' }
-]
+const { t } = useI18n()
+
 const data = reactive({
   invoiceNum: '1',
   date: new Date(),
