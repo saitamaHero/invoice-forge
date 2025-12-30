@@ -99,6 +99,21 @@
 
         </v-row>
       </v-container>
+      <v-footer class="text-center d-flex flex-column ga-2 py-4" color="grey-lighten-4">
+        <div class="d-flex ga-3">
+          <v-btn v-for="icon in icons" :key="icon.name" :icon="icon.name" :href="icon.url" target="_blank" density="comfortable"  variant="text"></v-btn>
+        </div>
+
+        <v-divider class="my-2" thickness="2" width="50"></v-divider>
+
+        <v-alert text="This app is under active development. Some features may not work as expected. Information is client-side" type="info" variant="outlined"></v-alert>
+        
+        <v-divider></v-divider>
+
+        <div>
+          {{ new Date().getFullYear() }} — <strong>Dionicio Acevedo</strong>
+        </div>
+      </v-footer>
     </v-main>
 
     <v-dialog v-model="showClearDataConfirm" width="auto">
@@ -168,6 +183,17 @@ const resetForm = () => {
 
 setupHandlebars()
 
+const icons = [
+  {
+    name: 'mdi-linkedin',
+    url: 'https://do.linkedin.com/in/dionicio-acevedo'
+  },
+  {
+    name: 'mdi-github',
+    url: 'https://github.com/saitamaHero/invoice-forge'
+  },
+];
+
 const compiledHtml = computed(() => {
   try {
     const template = Handlebars.compile(rawTemplate)
@@ -176,7 +202,7 @@ const compiledHtml = computed(() => {
     if (templateData.date instanceof Date) {
       const dt = DateTime.fromJSDate(templateData.date)
         .setZone(Intl.DateTimeFormat()
-        .resolvedOptions().timeZone)
+          .resolvedOptions().timeZone)
         .setLocale(navigator.language);
       templateData.date = dt.toLocaleString(DateTime.DATE_SHORT)
     }
