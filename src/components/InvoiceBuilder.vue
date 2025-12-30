@@ -9,7 +9,7 @@
         <!-- Locale Chooser Component -->
         <LocaleChooser></LocaleChooser>
       </div>
-      <v-btn prepend-icon="mdi-refresh" variant="text" @click="resetForm">
+      <v-btn prepend-icon="mdi-refresh" variant="text" @click="showClearDataConfirm = true">
         {{ t('button.reset') }}
       </v-btn>
 
@@ -100,6 +100,14 @@
         </v-row>
       </v-container>
     </v-main>
+
+    <v-dialog v-model="showClearDataConfirm" width="auto">
+      <v-card max-width="400" prepend-icon="mdi-update" text="" title="Clear all data?">
+        <template v-slot:actions>
+          <v-btn class="ms-auto" :text="t('button.reset')" @click="resetForm"></v-btn>
+        </template>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -138,13 +146,23 @@ const data = reactive({
   currency: 'USD'
 })
 
-const addItem = () => data.items.push(newLineItem({ description: 'new item', id: nanoid() }))
-const removeItem = (i) => data.items.splice(i, 1)
+const showClearDataConfirm = ref(false);
+
+const addItem = () => data.items.push(newLineItem({ description: 'new item' }))
+const removeItem = (id) => {
+  const index = data.items.findIndex(item => item.id === id)
+
+  if (index !== -1) {
+    data.items.splice(index, 1)
+  }
+}
 const resetForm = () => {
-  if (confirm('Clear all data?')) {
-    data.items = []
-    data.from = { name: '', address: '' }
-    data.to = { name: '', address: '' }
+  data.items = []
+  data.from = { name: '', address: '' }
+  data.to = { name: '', address: '' }
+
+  if (showClearDataConfirm.value) {
+    showClearDataConfirm.value = false
   }
 }
 
